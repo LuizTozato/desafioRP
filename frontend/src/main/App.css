@@ -1,0 +1,49 @@
+:root {
+  --background-dark: #1A2F3A;
+
+  --logo-height: 80px;
+  --header-height: 100px;
+  --aside-width: 200px;
+
+  --shadow:
+      0 2px 23px 0 rgba(0, 0, 255, 0.1),
+      0 2px 49px 0 rgba(0, 0, 255, 0.06)
+      
+}
+
+* {
+  box-sizing: border-box; /*As propriedades de largura (width) e de altura (height) 
+  incluem o tamanho padding size e a propriedade border, mas não incluem a propriedade margin.*/
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.app {
+  margin: 0px;
+  display: grid;
+  grid-template-columns: var(--aside-width) 1fr ;
+  grid-template-rows: 
+      var(--header-height)
+      1fr;
+  grid-template-areas: 
+      "logo header"
+      "menu content";
+  
+  height: 100vh;
+}
+
+.logo {
+  grid-area: logo; /*esse é o nome de batismo para usar no grid-template-areas*/
+}
+
+.header {
+  grid-area: header;
+}
+
+.menu {
+  grid-area: menu;
+}
+
+.content {
+  grid-area: content;
+  padding: 20px;
+}

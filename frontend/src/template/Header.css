@@ -1,0 +1,13 @@
+.header {
+    padding-top: 20px;
+    padding-left: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.header p {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 2em;
+    overflow: hidden;
+    
+}

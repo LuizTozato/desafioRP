@@ -1,0 +1,22 @@
+.div-root-cadastro {
+    width: 100%;
+    height: 100%;
+  }
+  
+.form-cadastro{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-largura{
+    width: 300px;
+}
+
+.input-altura{
+    height: 150px;
+}
+
+.button-largura{
+    width: 150px;
+}

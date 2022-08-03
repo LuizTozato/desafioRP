@@ -1,0 +1,13 @@
+.menu {
+    width: var(--aside-width);
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: var(--background-dark);
+}
+
+.text-white {
+    color: white;
+}
