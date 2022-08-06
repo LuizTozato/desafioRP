@@ -1,9 +1,11 @@
 export default {
 
-    async enviar ( nome, data_nascimento, cpf, celular, email, endereco, observacao, acao ) {
+    async enviar ( acao, id_cliente='', nome='', data_nascimento='', cpf='', celular='', email='', endereco='', observacao='') {
 
+        //acao = 'POST' -> create ou 1 requisicao, 'GET' -> read all, 'PUT' -> update, 'DELETE' -> delete
         //montando o objeto cliente
         let cliente = {
+            id_cliente,
             nome,
             data_nascimento,
             cpf,
@@ -11,14 +13,21 @@ export default {
             email,
             endereco,
             observacao,
-            acao //'c' -> create, 'r' -> read, 'u' -> update, 'd' -> delete
         }
 
         //como vou enviar:
-        let requisicao = {
-            method: 'POST',
-            headers: {'Content-Type' : 'application/json'},
-            body: JSON.stringify(cliente)
+        let requisicao
+        if(acao === "GET"){
+            requisicao = {
+                method: acao,
+                headers: {'Content-Type' : 'application/json'}
+            }
+        } else {
+            requisicao = {
+                method: acao,
+                headers: {'Content-Type' : 'application/json'},
+                body: JSON.stringify(cliente)
+            }
         }
 
         console.log(requisicao)

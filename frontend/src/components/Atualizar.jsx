@@ -1,12 +1,14 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import { useSearchParams } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {Button, Form} from 'react-bootstrap'
-import './Cadastro.css'
+import './Atualizar.css'
 import Api from '../api/Api'
 
-const Cadastro = () => {
+const Atualizar = () => {
 
   //STATES
+  const [id_cliente, setIdCliente] = useState("")
   const [nome, setNome] = useState("")
   const [data_nascimento, setDataNascimento] = useState("")
   const [cpf, setCpf] = useState("")
@@ -16,16 +18,37 @@ const Cadastro = () => {
   const [observacao, setObservacao] = useState("")
 
   const [msg, setMsg] = useState("")
+  const [searchParams] = useSearchParams()
 
+
+  useEffect( () => {
+    
+    const id_aux = searchParams.get("id_cliente")
+    setIdCliente(id_aux)
+
+    const fetchData = async () => {
+        
+        const cliente = await Api.enviar("POST",id_aux)
+        setNome(cliente.dados.nome)
+        setDataNascimento(cliente.dados.data_nascimento)
+        setCpf(cliente.dados.cpf)
+        setCelular(cliente.dados.celular)
+        setEmail(cliente.dados.email)
+        setEndereco(cliente.dados.endereco)
+        setObservacao(cliente.dados.observacao)
+    }
+
+    fetchData()
+
+  }, [])
 
   //FUNÇÕES
   const handleEnviar = async(e) => {
     e.preventDefault()
 
-    const resposta = await ( Api.enviar("POST",'',nome,data_nascimento,cpf,celular,email,endereco,observacao) )
+    const resposta = await ( Api.enviar("PUT",id_cliente,nome,data_nascimento,cpf,celular,email,endereco,observacao) )
     setMsg(resposta.msg)
     setTimeout(()=> setMsg(''),3000)
-
   }
 
   const handleLimpar = () => {
@@ -41,9 +64,9 @@ const Cadastro = () => {
   //JSX ==================
   function renderForm(){
     return (
-      <div className='div-root-cadastro'>
-        <Form className='form-cadastro'>
-          <h3 className='mb-4'>Cadastro de Cliente</h3>
+      <div className='div-root-atualizar'>
+        <Form className='form-atualizar'>
+          <h3 className='mb-4'>Atualizar Cliente</h3>
           <Form.Group className='mb-3 form-largura'>
             <Form.Control
               className='mb-3'
@@ -117,11 +140,11 @@ const Cadastro = () => {
   }
 
   return (
-    <div className="cadastro-root content">
+    <div className="atualizar-root content">
       {renderForm()}
     </div>
   )
 
 }
 
-export default Cadastro;
+export default Atualizar;

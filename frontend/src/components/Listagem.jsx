@@ -1,13 +1,16 @@
 import React, {useState, useEffect} from "react"
 import 'bootstrap/dist/css/bootstrap.min.css'
-import {Button, Form} from 'react-bootstrap'
 import './Listagem.css'
+import {Button} from 'react-bootstrap'
+import Dialog from "../template/Dialog"
 import Api from '../api/Api'
 
 
 const Listagem = () => {
 
     const [list, setList] = useState([])
+    const [dialog, setDialog] = useState(null)
+    const [msg, setMsg] = useState("")
 
 
     useEffect(() => {
@@ -17,10 +20,44 @@ const Listagem = () => {
     //FUNÇÕES ==================================
     async function buscarPedidos(){
         
-        const resposta = await Api.enviar('','','','','','','',"r")
+        const resposta = await Api.enviar("GET")
         setList(resposta.dados)
     }
 
+    function editarClickEvent(id_cliente) {
+        window.location.href = "/atualizar?id_cliente=" + id_cliente
+    }    
+
+    function deleteClickEvent(id_cliente) {
+        openDialog(
+            "Está certo da exclusão?",
+            (confirmado) => {
+                
+                closeDialog()
+
+                if (confirmado) {
+                    confirmaExclusao(id_cliente)
+                }
+            }
+        )
+    }
+
+    function openDialog(message, callback, config) {
+        setDialog(Dialog(message, callback, config))
+    }    
+
+    function closeDialog() {
+        setDialog(null)
+    }
+
+    async function confirmaExclusao(id_cliente) {
+        
+        const resposta = await ( Api.enviar("DELETE",id_cliente) )
+        setMsg(resposta.msg)
+        setList( list.filter(p => p.id_cliente !== id_cliente) )
+        setTimeout(()=> setMsg(''),3000)
+
+    }    
 
     //JSX ======================================
     function renderTable(){
@@ -61,8 +98,8 @@ const Listagem = () => {
                 <td>{cadastro.endereco}</td>
                 <td>{cadastro.observacao}</td>
                 <td>
-                    <Button>Editar</Button>{' '}
-                    <Button variant="secondary">Excluir</Button>
+                    <Button onClick={() => editarClickEvent(cadastro.id_cliente)}>Editar</Button>{' '}
+                    <Button variant="secondary" onClick={() => deleteClickEvent(cadastro.id_cliente)}>Excluir</Button>
                 </td>
             </tr>
         )
@@ -73,6 +110,13 @@ const Listagem = () => {
     return(
         <div className="listagem-root content">
             {renderTable()}
+            {dialog}
+            {
+                msg !== '' && 
+                <div className="msg">
+                    {msg}
+                </div>
+            }
         </div>        
     )
 

@@ -1,0 +1,10 @@
+.div-root-atualizar {
+    width: 100%;
+    height: 100%;
+}
+
+.form-atualizar{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
