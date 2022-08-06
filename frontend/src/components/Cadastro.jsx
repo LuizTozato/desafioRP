@@ -22,9 +22,20 @@ const Cadastro = () => {
   const handleEnviar = async(e) => {
     e.preventDefault()
 
-    setMsg(await ( Api.enviar(nome,data_nascimento,cpf,celular,email,endereco,observacao) ))
+    const resposta = await ( Api.enviar(nome,data_nascimento,cpf,celular,email,endereco,observacao,"c") )
+    setMsg(resposta.msg)
     setTimeout(()=> setMsg(''),3000)
 
+  }
+
+  const handleLimpar = () => {
+    setNome('')
+    setDataNascimento('')
+    setCpf('')
+    setCelular('')
+    setEmail('')
+    setEndereco('')
+    setObservacao('')
   }
 
   //JSX ==================
@@ -37,42 +48,49 @@ const Cadastro = () => {
             <Form.Control
               className='mb-3'
               type='text'
+              value={nome}
               placeholder='Nome do cliente.'
               onChange={e => setNome(e.target.value)}
             />
             <Form.Control
               className='mb-3'
               type='text'
+              value={data_nascimento}
               placeholder='Data de nascimento.'
               onChange={e => setDataNascimento(e.target.value)}
             />            
             <Form.Control
               className='mb-3'
               type='text'
+              value={cpf}
               placeholder='Número do CPF do cliente.'
               onChange={e => setCpf(e.target.value)}
             />
             <Form.Control
               className='mb-3'
               type='text'
+              value={celular}
               placeholder='Número do celular do cliente.'
               onChange={e => setCelular(e.target.value)}
             />    
             <Form.Control
               className='mb-3'
               type='email'
+              value={email}
               placeholder='E-mail do cliente.'
               onChange={e => setEmail(e.target.value)}
             />
             <Form.Control
               className='mb-3'
               type='text'
+              value={endereco}
               placeholder='Endereço do cliente.'
               onChange={e => setEndereco(e.target.value)}
             />                                            
             <Form.Control
               className='mb-3 input-altura'
               type='text'
+              value={observacao}
               placeholder='Observações.'
               onChange={e => setObservacao(e.target.value)}
             />                
@@ -82,7 +100,7 @@ const Cadastro = () => {
             <Button variant="primary" className='button-largura' onClick={handleEnviar}>
                 Salvar
             </Button>{' '}
-            <Button variant="secondary" className='button-largura'>
+            <Button variant="secondary" className='button-largura' onClick={handleLimpar}>
                 Limpar
             </Button>
           </Form.Group>

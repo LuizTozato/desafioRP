@@ -11,8 +11,8 @@ const Nav = () => (
         <Link to='/cadastro' className="mb-2 text-white">
             Cadastrar
         </Link>
-        <Link to='/listar' className="mb-2 text-white">
-            Pesquisar
+        <Link to='/listagem' className="mb-2 text-white">
+            Listagem
         </Link>
     </nav>
 

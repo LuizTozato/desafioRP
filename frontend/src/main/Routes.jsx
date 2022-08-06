@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom"
 
 import Home from "../template/Home"
 import Cadastro from "../components/Cadastro"
+import Listagem from "../components/Listagem"
 
 const Rotas = () => {
     
@@ -10,6 +11,7 @@ const Rotas = () => {
         <Routes>
             <Route exact path='/' element={<Home/>}/>
             <Route exact path='/cadastro' element={<Cadastro/>}/>
+            <Route exact path='/listagem' element={<Listagem/>}/>
         </Routes>
     )
 }

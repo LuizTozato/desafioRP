@@ -1,6 +1,6 @@
 export default {
 
-    async enviar ( nome, data_nascimento, cpf, celular, email, endereco, observacao ) {
+    async enviar ( nome, data_nascimento, cpf, celular, email, endereco, observacao, acao ) {
 
         //montando o objeto cliente
         let cliente = {
@@ -10,7 +10,8 @@ export default {
             celular,
             email,
             endereco,
-            observacao
+            observacao,
+            acao //'c' -> create, 'r' -> read, 'u' -> update, 'd' -> delete
         }
 
         //como vou enviar:
@@ -26,7 +27,7 @@ export default {
         const response = await fetch('http://localhost/newm/', requisicao)
         const data = await response.json()
         console.log(data)
-        return data.msg
+        return data
 
     }
 }
