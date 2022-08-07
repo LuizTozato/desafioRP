@@ -20,7 +20,7 @@ const Listagem = () => {
     //FUNÇÕES ==================================
     async function buscarPedidos(){
         
-        const resposta = await Api.enviar("GET")
+        const resposta = await Api.enviarGet(0)
         setList(resposta.dados)
     }
 
