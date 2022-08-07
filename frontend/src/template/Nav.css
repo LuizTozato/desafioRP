@@ -11,6 +11,9 @@
 .text-white {
     color: white;
     padding: 5px;
+    font-size: 1.1em;
+    text-decoration: none;
+    
 }
 
 .menu .hover-on:hover{

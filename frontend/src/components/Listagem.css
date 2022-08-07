@@ -41,3 +41,37 @@
     margin: 2px;
     padding: 5px;
 }
+
+.div-root-filter{
+    width: 650px;
+}
+
+.formListagem {
+    display: flex;
+    align-items: center;
+}
+
+.formListagem *{
+    margin: 0px 0px 20px 0px;
+}
+
+.text-filter{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.text-exibicao{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;;
+    font-size: 1.1em;
+}
+
+.paginacao{
+    display: flex;
+    align-items: center;
+}
+
+.paginacao *{
+
+    margin-right: 10px;
+}

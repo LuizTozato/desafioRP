@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from "react"
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './Listagem.css'
-import {Button} from 'react-bootstrap'
+import {Button, Form} from 'react-bootstrap'
 import Dialog from "../template/Dialog"
 import Api from '../api/Api'
+import _ from 'loadsh'
 
 
 const Listagem = () => {
@@ -11,17 +12,21 @@ const Listagem = () => {
     const [list, setList] = useState([])
     const [dialog, setDialog] = useState(null)
     const [msg, setMsg] = useState("")
+    const [busca, setBusca] = useState('')
+    const [offset, setOffset] = useState(0)
+    const [totalPedidos, setTotalPedidos] = useState(0)      
 
 
     useEffect(() => {
         buscarPedidos()
-    }, [])
+    }, [busca, offset])
 
     //FUNÇÕES ==================================
     async function buscarPedidos(){
         
         const resposta = await Api.enviarGet(0)
-        setList(resposta.dados)
+        setList(resposta.dados[0])
+        setTotalPedidos(resposta.dados[1]['COUNT(id_cliente)'])
     }
 
     function editarClickEvent(id_cliente) {
@@ -106,9 +111,61 @@ const Listagem = () => {
         
     }
 
+    function handleFilter(e){
+
+        setOffset(0)
+        setBusca(e.target.value)
+    }
+
+    const debounced_handleFilter = _.debounce(handleFilter, 500)
+
+    function renderFilterInput(){
+        return (
+            <div className="div-root-filter">
+                <Form className="formListagem">
+                    <h6 className="text-filter">Filtro:</h6>
+                    <Form.Control
+                        id="inputBusca"
+                        type="text"
+                        onChange={debounced_handleFilter}
+                        placeholder="Digite o nome ou e-mail do cliente"/>
+                </Form>
+                <h6 className="text-exibicao">Exibindo de {offset+1} até {offset+5>totalPedidos?totalPedidos:offset+5}. Total de itens: {totalPedidos}. </h6>
+                <hr></hr>
+            </div>
+        )
+    }
+
+    function proximaPagina(){
+        if( offset + 5 < totalPedidos){
+            setOffset( offset + 5 )
+        }
+    }
+
+    function paginaAnterior(){
+        if( offset - 5 >= 0 ){
+            setOffset( offset - 5 )
+        }
+    }
+
+    function renderPagination(){
+        return(
+            <>
+                <div className="paginacao">
+                    <h5 className="mb-0 text-exibicao">Paginação:</h5>
+                    <Button variant="light" onClick={paginaAnterior}>Anterior</Button>
+                    <Button variant="dark" onClick={proximaPagina}>Próxima</Button>                
+                </div>
+                <hr></hr>
+            </>
+            
+        )
+    }
 
     return(
         <div className="listagem-root content">
+            {renderFilterInput()}
+            {renderPagination()}            
             {renderTable()}
             {dialog}
             {
