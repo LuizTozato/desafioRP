@@ -1,0 +1,43 @@
+.tabelaClientes {
+    border-collapse: collapse;
+    margin: 2px;
+    font-size: 1.0em;
+    min-width: 800px;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.tabelaClientes thead tr{
+    background-color: var(--background-dark);
+    color: white;
+    text-align: left;
+    font-weight: bold;
+}
+
+
+.tabelaClientes th,
+.tabelaClientes td {
+    padding: 2px 7px 2px 7px;
+}
+
+.tabelaClientes tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.tabelaClientes tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.tabelaClientes tbody tr:last-of-type {
+    border-bottom: 2px solid rgb(2,108,166);
+}
+
+.tabelaClientes tbody tr:hover {
+    color: rgb(2,108,166);
+}
+
+.tabelaClientes tbody tr td button {
+    margin: 2px;
+    padding: 5px;
+}

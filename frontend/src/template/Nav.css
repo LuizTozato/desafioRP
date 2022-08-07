@@ -10,4 +10,11 @@
 
 .text-white {
     color: white;
+    padding: 5px;
+}
+
+.menu .hover-on:hover{
+    background: linear-gradient(135deg, rgb(2,108,166), rgb(26,46,58) 100%);
+    border-radius: 5px;
+    
 }
