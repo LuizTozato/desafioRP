@@ -35,7 +35,7 @@ export default {
 
     },
 
-    async enviarGet ( offset, limit = 10) {
+    async enviarGet ( busca, offset, limit = 10) {
 
         //acao = 'GET' -> read all
 
@@ -49,6 +49,7 @@ export default {
 
         //o que retorna:
         const response = await fetch('http://localhost/newm/?' + new URLSearchParams({
+            busca,
             offset,
             limit
         }), requisicao)
