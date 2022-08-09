@@ -1,8 +1,11 @@
 import React, {useState} from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import InputMask from 'react-input-mask'
 import {Button, Form} from 'react-bootstrap'
 import './Cadastro.css'
 import Api from '../api/Api'
+import dataNova from '../utils/DataNova'
+import { validate } from 'gerador-validador-cpf'
 
 const Cadastro = () => {
 
@@ -22,9 +25,54 @@ const Cadastro = () => {
   const handleEnviar = async(e) => {
     e.preventDefault()
 
-    const resposta = await ( Api.enviar("POST",'',nome,data_nascimento,cpf,celular,email,endereco,observacao) )
-    setMsg(resposta.msg)
-    setTimeout(()=> setMsg(''),3000)
+    const saneamento = sanearInput()
+    if(saneamento.validacao){
+
+      const resposta = await ( Api.enviar("POST",'',nome,data_nascimento,cpf,celular,email,endereco,observacao) )
+      setMsg(resposta.msg)
+      setTimeout(()=> setMsg(''),3000)
+    
+    } else {
+
+      setMsg(saneamento.mensagem)
+      setTimeout(()=> setMsg(''),3000)
+    }
+  }
+
+  function sanearInput(){
+    
+    let validacao = true
+    let mensagem = 'OK'
+
+    if(nome === ''){
+      validacao = false
+      mensagem = "Nome em branco"
+    }
+    else if( isNaN( dataNova(data_nascimento) ) ){
+      validacao = false
+      mensagem = "Data de nascimento inválida"
+    }
+    else if( !validate(cpf) ){
+      validacao = false
+      mensagem = "CPF inválido"
+    }
+    else if(celular.replace(/[^0-9]/g, '').length !== 11){
+      validacao = false
+      mensagem = "Celular inválido"
+    }
+    else if(email === '' || !email.includes('@')){
+      validacao = false
+      mensagem = "E-mail inválido"
+    }
+    else if(endereco === ''){
+      validacao = false
+      mensagem = "Endereço em branco"
+    } else if(observacao.replace(/[ ]/, '').length > 300){
+      validacao = false
+      mensagem = "Campo observação possui mais de 300 caracteres."
+    }
+    
+    return {validacao, mensagem}
 
   }
 
@@ -38,6 +86,7 @@ const Cadastro = () => {
     setObservacao('')
   }
 
+
   //JSX ==================
   function renderForm(){
     return (
@@ -50,9 +99,11 @@ const Cadastro = () => {
               type='text'
               value={nome}
               placeholder='Nome do cliente.'
-              onChange={e => setNome(e.target.value)}
+              onChange={e => setNome(e.target.value.replace(/[^a-zA-Zà-úÀ-Ú ]/g, ''))}
             />
             <Form.Control
+              as={InputMask}
+              mask="99/99/9999"
               className='mb-3'
               type='text'
               value={data_nascimento}
@@ -60,6 +111,8 @@ const Cadastro = () => {
               onChange={e => setDataNascimento(e.target.value)}
             />            
             <Form.Control
+              as={InputMask}
+              mask="999.999.999-99"
               className='mb-3'
               type='text'
               value={cpf}
@@ -67,6 +120,8 @@ const Cadastro = () => {
               onChange={e => setCpf(e.target.value)}
             />
             <Form.Control
+              as={InputMask}
+              mask="(99) 99999-9999"
               className='mb-3'
               type='text'
               value={celular}
@@ -89,6 +144,9 @@ const Cadastro = () => {
             />                                            
             <Form.Control
               className='mb-3 input-altura'
+              as="textarea"
+              rows={3}
+              maxLength={300}
               type='text'
               value={observacao}
               placeholder='Observações.'

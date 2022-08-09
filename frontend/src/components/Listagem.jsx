@@ -59,7 +59,7 @@ const Listagem = () => {
         
         const resposta = await ( Api.enviar("DELETE",id_cliente) )
         setMsg(resposta.msg)
-        setList( list.filter(p => p.id_cliente !== id_cliente) )
+        buscarPedidos()
         setTimeout(()=> setMsg(''),3000)
 
     }    
@@ -130,21 +130,21 @@ const Listagem = () => {
                         onChange={debounced_handleFilter}
                         placeholder="Digite o nome ou e-mail do cliente"/>
                 </Form>
-                <h6 className="text-exibicao">Exibindo de {offset+1} até {offset+5>totalPedidos?totalPedidos:offset+5}. Total de itens: {totalPedidos}. </h6>
+                <h6 className="text-exibicao">Exibindo de {offset+1} até {offset+10>totalPedidos?totalPedidos:offset+10}. Total de itens: {totalPedidos}. </h6>
                 <hr></hr>
             </div>
         )
     }
 
     function proximaPagina(){
-        if( offset + 5 < totalPedidos){
-            setOffset( offset + 5 )
+        if( offset + 10 < totalPedidos){
+            setOffset( offset + 10 )
         }
     }
 
     function paginaAnterior(){
-        if( offset - 5 >= 0 ){
-            setOffset( offset - 5 )
+        if( offset - 10 >= 0 ){
+            setOffset( offset - 10 )
         }
     }
 
