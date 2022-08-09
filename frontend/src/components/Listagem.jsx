@@ -24,7 +24,7 @@ const Listagem = () => {
     //FUNÇÕES ==================================
     async function buscarPedidos(){
         
-        const resposta = await Api.enviarGet(busca, 0)
+        const resposta = await Api.enviarGet(busca, offset)
         setList(resposta.dados[0])
         setTotalPedidos(resposta.dados[1]['COUNT(id_cliente)'])
     }
