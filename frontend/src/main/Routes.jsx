@@ -4,7 +4,6 @@ import { Routes, Route } from "react-router-dom"
 import Home from "../template/Home"
 import Cadastro from "../components/Cadastro"
 import Listagem from "../components/Listagem"
-import Atualizar from "../components/Atualizar"
 
 const Rotas = () => {
     

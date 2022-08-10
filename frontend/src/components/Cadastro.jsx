@@ -68,7 +68,8 @@ const Cadastro = () => {
 
       const resposta = await ( Api.enviar(metodo,id_cliente,nome,data_nascimento,cpf,celular,email,endereco,observacao) )
       setMsg(resposta.msg)
-      setTimeout(()=> setMsg(''),3000)
+      
+      setTimeout(()=> window.location.href = "/listagem" ,3000)
     
     } else {
 
@@ -105,7 +106,7 @@ const Cadastro = () => {
     else if(endereco === ''){
       validacao = false
       mensagem = "Endereço em branco"
-    } else if(observacao.replace(/[ ]/, '').length > 300){
+    } else if(observacao.length > 300){
       validacao = false
       mensagem = "Campo observação possui mais de 300 caracteres."
     }

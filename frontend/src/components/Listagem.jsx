@@ -4,7 +4,7 @@ import './Listagem.css'
 import {Button, Form} from 'react-bootstrap'
 import Dialog from "../template/Dialog"
 import Api from '../api/Api'
-import _ from 'loadsh'
+import _ from 'lodash'
 
 
 const Listagem = () => {
@@ -16,17 +16,35 @@ const Listagem = () => {
     const [offset, setOffset] = useState(0)
     const [totalPedidos, setTotalPedidos] = useState(0)      
 
+    const [linhasTabela, setLinhasTabela] = useState(10)
+
 
     useEffect(() => {
         buscarPedidos()
+                    
     }, [busca, offset])
 
     //FUNÇÕES ==================================
     async function buscarPedidos(){
         
         const resposta = await Api.enviarGet(busca, offset)
+        console.log(resposta)
+        
         setList(resposta.dados[0])
-        setTotalPedidos(resposta.dados[1]['COUNT(id_cliente)'])
+        const total = resposta.dados[1]['total']
+        setTotalPedidos(total)
+        
+        habilitarOuDesabilitarBotoesPaginacao(total)
+    }
+
+    function habilitarOuDesabilitarBotoesPaginacao(total){
+        offset === 0? 
+            document.getElementById("botao-anterior-paginacao").setAttribute('disabled','') : 
+            document.getElementById("botao-anterior-paginacao").removeAttribute('disabled','')
+
+        offset + linhasTabela >= total?
+            document.getElementById("botao-proxima-paginacao").setAttribute('disabled','') : 
+            document.getElementById("botao-proxima-paginacao").removeAttribute('disabled','')
     }
 
     function editarClickEvent(id_cliente) {
@@ -130,22 +148,18 @@ const Listagem = () => {
                         onChange={debounced_handleFilter}
                         placeholder="Digite o nome ou e-mail do cliente"/>
                 </Form>
-                <h6 className="text-exibicao">Exibindo de {offset+1} até {offset+10>totalPedidos?totalPedidos:offset+10}. Total de itens: {totalPedidos}. </h6>
+                <h6 className="text-exibicao">Exibindo de {offset+1} até {offset+linhasTabela>totalPedidos?totalPedidos:offset+linhasTabela}. Total de itens: {totalPedidos}. </h6>
                 <hr></hr>
             </div>
         )
     }
 
     function proximaPagina(){
-        if( offset + 10 < totalPedidos){
-            setOffset( offset + 10 )
-        }
+            setOffset( offset + linhasTabela )
     }
 
     function paginaAnterior(){
-        if( offset - 10 >= 0 ){
-            setOffset( offset - 10 )
-        }
+            setOffset( offset - linhasTabela )
     }
 
     function renderPagination(){
@@ -153,8 +167,8 @@ const Listagem = () => {
             <>
                 <div className="paginacao">
                     <h5 className="mb-0 text-exibicao">Paginação:</h5>
-                    <Button variant="light" onClick={paginaAnterior}>Anterior</Button>
-                    <Button variant="dark" onClick={proximaPagina}>Próxima</Button>                
+                    <Button id="botao-anterior-paginacao" variant="light" onClick={paginaAnterior}>Anterior</Button>
+                    <Button id="botao-proxima-paginacao" variant="dark" onClick={proximaPagina}>Próxima</Button>                
                 </div>
                 <hr></hr>
             </>
