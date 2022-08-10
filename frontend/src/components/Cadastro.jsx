@@ -5,7 +5,7 @@ import {Button, Form} from 'react-bootstrap'
 import './Cadastro.css'
 import Api from '../api/Api'
 import dataNova from '../utils/DataNova'
-import { validate } from 'gerador-validador-cpf'
+import validarCpf from '../utils/ValidarCPF'
 
 const Cadastro = () => {
 
@@ -44,15 +44,15 @@ const Cadastro = () => {
     let validacao = true
     let mensagem = 'OK'
 
-    if(nome === ''){
+    if(nome === '' || nome.length < 5){
       validacao = false
-      mensagem = "Nome em branco"
+      mensagem = "Nome inválido"
     }
     else if( isNaN( dataNova(data_nascimento) ) ){
       validacao = false
       mensagem = "Data de nascimento inválida"
     }
-    else if( !validate(cpf) ){
+    else if( !validarCpf(cpf) ){
       validacao = false
       mensagem = "CPF inválido"
     }

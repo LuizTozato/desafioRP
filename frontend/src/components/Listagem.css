@@ -20,6 +20,7 @@
 .tabelaClientes th,
 .tabelaClientes td {
     padding: 2px 7px 2px 7px;
+    max-width: 300px;
 }
 
 .tabelaClientes tbody tr {
