@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import { useSearchParams } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import InputMask from 'react-input-mask'
 import {Button, Form} from 'react-bootstrap'
@@ -10,6 +11,7 @@ import validarCpf from '../utils/ValidarCPF'
 const Cadastro = () => {
 
   //STATES
+  const [id_cliente, setIdCliente] = useState("")  
   const [nome, setNome] = useState("")
   const [data_nascimento, setDataNascimento] = useState("")
   const [cpf, setCpf] = useState("")
@@ -19,7 +21,43 @@ const Cadastro = () => {
   const [observacao, setObservacao] = useState("")
 
   const [msg, setMsg] = useState("")
+  const [searchParams] = useSearchParams()  
+  const [metodo, setMetodo] = useState("")
 
+
+  useEffect( () => {
+    
+    const id_aux = searchParams.get("id_cliente")
+    if(id_aux !== null){
+      
+      //ATUALIZAÇÃO
+      document.getElementById('titulo-cadastro').innerHTML = "Atualizar Cliente"
+      setMetodo("PUT")
+      setIdCliente(id_aux)
+  
+      const fetchData = async () => {
+          
+          const cliente = await Api.enviar("POST",id_aux)
+          setNome(cliente.dados.nome)
+          setDataNascimento(cliente.dados.data_nascimento)
+          setCpf(cliente.dados.cpf)
+          setCelular(cliente.dados.celular)
+          setEmail(cliente.dados.email)
+          setEndereco(cliente.dados.endereco)
+          setObservacao(cliente.dados.observacao)
+      }
+  
+      fetchData()
+    
+    } else {
+
+      //CRIAR NOVO REGISTRO
+      document.getElementById('titulo-cadastro').innerHTML = "Cadastrar Cliente"
+      setMetodo("POST")
+
+    }
+
+  }, [])
 
   //FUNÇÕES
   const handleEnviar = async(e) => {
@@ -28,7 +66,7 @@ const Cadastro = () => {
     const saneamento = sanearInput()
     if(saneamento.validacao){
 
-      const resposta = await ( Api.enviar("POST",'',nome,data_nascimento,cpf,celular,email,endereco,observacao) )
+      const resposta = await ( Api.enviar(metodo,id_cliente,nome,data_nascimento,cpf,celular,email,endereco,observacao) )
       setMsg(resposta.msg)
       setTimeout(()=> setMsg(''),3000)
     
@@ -92,7 +130,7 @@ const Cadastro = () => {
     return (
       <div className='div-root-cadastro'>
         <Form className='form-cadastro'>
-          <h3 className='mb-4'>Cadastro de Cliente</h3>
+          <h3 id='titulo-cadastro' className='mb-4'></h3>
           <Form.Group className='mb-3 form-largura'>
             <Form.Control
               className='mb-3'

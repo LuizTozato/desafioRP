@@ -13,7 +13,6 @@ const Rotas = () => {
             <Route exact path='/' element={<Home/>}/>
             <Route exact path='/cadastro' element={<Cadastro/>}/>
             <Route exact path='/listagem' element={<Listagem/>}/>
-            <Route exact path='/atualizar' element={<Atualizar/>}/>
         </Routes>
     )
 }

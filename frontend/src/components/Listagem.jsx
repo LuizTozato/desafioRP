@@ -30,7 +30,7 @@ const Listagem = () => {
     }
 
     function editarClickEvent(id_cliente) {
-        window.location.href = "/atualizar?id_cliente=" + id_cliente
+        window.location.href = "/cadastro?id_cliente=" + id_cliente
     }    
 
     function deleteClickEvent(id_cliente) {
